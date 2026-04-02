@@ -3,89 +3,90 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Furies Gym">
-<meta name="theme-color" content="#0a0a0a">
-<link rel="manifest" href="manifest.json">
-<!-- Icône Apple (crée un fichier icon-192.png rouge/noir avec "FG" dedans) -->
-<link rel="apple-touch-icon" href="icon-192.png">
 <title>Furies Gym</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0a; --surface: #141414; --card: #1c1c1c; --border: #2a2a2a;
-    --accent: #e63b2e; --accent2: #ff6b35; --gold: #c9a84c;
-    --text: #f0ece4; --muted: #7a7570; --success: #4caf50; --radius: 10px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  body { background: var(--bg); color: var(--text); font-family: 'Barlow', sans-serif; min-height: 100vh; max-width: 480px; margin: 0 auto; padding-bottom: 90px; }
-  header { background: linear-gradient(180deg, #1a0a08 0%, var(--bg) 100%); padding: 20px 20px 16px; border-bottom: 1px solid #2a1510; position: sticky; top: 0; z-index: 100; }
-  .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-  .app-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 3px; color: var(--accent); text-shadow: 0 0 20px rgba(230,59,46,0.4); }
-  .week-badge { font-family: 'Barlow Condensed', sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 2px; color: var(--gold); background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); padding: 4px 10px; border-radius: 20px; }
-  .session-tabs { display: flex; gap: 8px; margin-top: 14px; }
-  .tab { flex: 1; padding: 8px 4px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 700; letter-spacing: 1.5px; color: var(--muted); cursor: pointer; text-align: center; transition: all 0.2s; }
-  .tab.active { background: var(--accent); border-color: var(--accent); color: white; box-shadow: 0 0 12px rgba(230,59,46,0.4); }
-  .cardio-block { margin: 16px 16px 0; background: linear-gradient(135deg, #1a1208 0%, #1c1410 100%); border: 1px solid rgba(201,168,76,0.2); border-radius: var(--radius); padding: 14px 16px; }
-  .cardio-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-  .section-label { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; }
-  .timer-display { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; color: var(--gold); line-height: 1; }
-  .cardio-protocol { font-size: 12px; color: var(--muted); line-height: 1.6; margin-bottom: 10px; }
-  .cardio-protocol span { color: var(--text); font-weight: 500; }
-  .btn-timer { width: 100%; padding: 10px; background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.4); border-radius: 8px; color: var(--gold); font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; }
-  .btn-timer.running { background: rgba(230,59,46,0.2); border-color: var(--accent); color: var(--accent); animation: pulse 1.5s infinite; }
-  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(230,59,46,0.3)} 50%{box-shadow:0 0 0 6px rgba(230,59,46,0)} }
-  .exercises-container { padding: 12px 16px; }
-  .exercise-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 10px; overflow: hidden; transition: border-color 0.2s; }
-  .exercise-card.completed { border-color: rgba(76,175,80,0.4); }
-  .exercise-header { display: flex; align-items: center; padding: 12px 14px; cursor: pointer; gap: 12px; }
-  .ex-number { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--accent); min-width: 24px; line-height: 1; }
-  .ex-info { flex: 1; }
-  .ex-name { font-family: 'Barlow Condensed', sans-serif; font-size: 16px; font-weight: 700; letter-spacing: 0.5px; color: var(--text); line-height: 1.2; }
-  .ex-target { font-size: 12px; color: var(--muted); margin-top: 2px; }
-  .ex-target span { color: var(--accent2); font-weight: 600; }
-  .ex-check { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; color: transparent; font-size: 14px; transition: all 0.2s; cursor: pointer; flex-shrink: 0; }
-  .ex-check.done { background: var(--success); border-color: var(--success); color: white; }
-  .sets-container { border-top: 1px solid var(--border); padding: 0 14px 12px; display: none; }
-  .sets-container.open { display: block; }
-  .ex-illustration { background: #111; border-bottom: 1px solid var(--border); padding: 14px 12px; display: flex; align-items: flex-start; gap: 12px; }
-  .ex-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
-  .ex-desc strong { color: var(--accent2); display: block; font-family: 'Barlow Condensed', sans-serif; font-size: 12px; letter-spacing: 1.5px; margin-bottom: 4px; }
-  .muscles-tag { display: inline-block; margin-top: 7px; font-size: 10px; font-family: 'Barlow Condensed', sans-serif; letter-spacing: 1.5px; color: var(--gold); background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2); padding: 2px 8px; border-radius: 10px; }
-  .illus-toggle { display: block; width: calc(100% - 28px); margin: 8px 14px 0; background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.25); border-radius: 20px; color: var(--gold); font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 2px; padding: 5px 0; cursor: pointer; text-align: center; }
-  .sets-header { display: grid; grid-template-columns: 36px 1fr 1fr 44px; gap: 8px; padding: 8px 0 6px; font-family: 'Barlow Condensed', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
-  .set-row { display: grid; grid-template-columns: 36px 1fr 1fr 44px; gap: 8px; margin-bottom: 6px; align-items: center; }
-  .set-num { font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 600; color: var(--muted); text-align: center; }
-  .set-input { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px; color: var(--text); font-family: 'Barlow', sans-serif; font-size: 15px; font-weight: 500; text-align: center; width: 100%; -webkit-appearance: none; }
-  .set-input:focus { outline: none; border-color: var(--accent); background: #1f1410; }
-  .set-input::placeholder { color: var(--muted); font-size: 13px; }
-  .set-done-btn { width: 36px; height: 36px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--muted); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
-  .set-done-btn.done { background: rgba(76,175,80,0.15); border-color: var(--success); color: var(--success); }
-  .rest-hint { font-size: 11px; color: var(--muted); text-align: center; padding: 6px 0 2px; letter-spacing: 1px; }
-  .week-nav { display: flex; align-items: center; gap: 10px; padding: 12px 16px 0; }
-  .week-nav button { background: var(--card); border: 1px solid var(--border); border-radius: 6px; color: var(--muted); width: 32px; height: 32px; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-  .week-label { flex: 1; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: 2px; color: var(--text); text-transform: uppercase; }
-  .progress-wrap { padding: 10px 16px 0; }
-  .progress-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
-  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; transition: width 0.4s ease; }
-  .progress-label { font-size: 11px; color: var(--muted); letter-spacing: 1px; margin-top: 5px; font-family: 'Barlow Condensed', sans-serif; }
-  .bottom-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: linear-gradient(0deg, #0f0f0f 60%, transparent); padding: 12px 16px 28px; display: flex; gap: 10px; }
-  .btn-save { flex: 1; padding: 14px; background: var(--accent); border: none; border-radius: 10px; color: white; font-family: 'Bebas Neue', sans-serif; font-size: 18px; letter-spacing: 3px; cursor: pointer; box-shadow: 0 4px 20px rgba(230,59,46,0.4); transition: all 0.2s; }
-  .btn-save:active { transform: scale(0.97); }
-  .btn-history { padding: 14px 16px; background: var(--card); border: 1px solid var(--border); border-radius: 10px; color: var(--muted); font-size: 20px; cursor: pointer; }
-  .history-panel { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; backdrop-filter: blur(4px); }
-  .history-panel.open { display: flex; align-items: flex-end; }
-  .history-sheet { background: #111; border-top: 1px solid var(--border); border-radius: 20px 20px 0 0; width: 100%; max-height: 75vh; overflow-y: auto; padding: 20px 16px 40px; }
-  .history-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 3px; color: var(--accent); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; }
-  .close-btn { font-size: 20px; color: var(--muted); cursor: pointer; font-family: sans-serif; }
-  .history-entry { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 10px; }
-  .history-date { font-family: 'Barlow Condensed', sans-serif; font-size: 11px; letter-spacing: 2px; color: var(--gold); margin-bottom: 8px; text-transform: uppercase; }
-  .history-row { font-size: 13px; color: var(--muted); margin-bottom: 4px; line-height: 1.4; }
-  .history-row strong { color: var(--text); }
-  .empty-history { text-align: center; color: var(--muted); font-size: 14px; padding: 30px 0; }
-  .toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%) translateY(-20px); background: var(--success); color: white; padding: 10px 20px; border-radius: 20px; font-family: 'Barlow Condensed', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: 2px; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 300; white-space: nowrap; }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+:root{--bg:#0a0a0a;--surface:#141414;--card:#1c1c1c;--border:#2a2a2a;--accent:#e63b2e;--accent2:#ff6b35;--gold:#c9a84c;--text:#f0ece4;--muted:#7a7570;--success:#4caf50;--radius:10px}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--text);font-family:'Barlow',sans-serif;min-height:100vh;max-width:480px;margin:0 auto;padding-bottom:90px}
+header{background:linear-gradient(180deg,#1a0a08 0%,var(--bg) 100%);padding:20px 20px 16px;border-bottom:1px solid #2a1510;position:sticky;top:0;z-index:100}
+.header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.app-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;color:var(--accent);text-shadow:0 0 20px rgba(230,59,46,0.4)}
+.week-badge{font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--gold);background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);padding:4px 10px;border-radius:20px}
+.session-tabs{display:flex;gap:8px;margin-top:14px}
+.tab{flex:1;padding:8px 4px;background:var(--card);border:1px solid var(--border);border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:1.5px;color:var(--muted);cursor:pointer;text-align:center;transition:all 0.2s}
+.tab.active{background:var(--accent);border-color:var(--accent);color:white;box-shadow:0 0 12px rgba(230,59,46,0.4)}
+.cardio-block{margin:16px 16px 0;background:linear-gradient(135deg,#1a1208 0%,#1c1410 100%);border:1px solid rgba(201,168,76,0.2);border-radius:var(--radius);padding:14px 16px}
+.cardio-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.section-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase}
+.timer-display{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:2px;color:var(--gold);line-height:1}
+.cardio-protocol{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:10px}
+.cardio-protocol span{color:var(--text);font-weight:500}
+.btn-timer{width:100%;padding:10px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.4);border-radius:8px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;cursor:pointer;transition:all 0.2s}
+.btn-timer.running{background:rgba(230,59,46,0.2);border-color:var(--accent);color:var(--accent);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(230,59,46,0.3)}50%{box-shadow:0 0 0 6px rgba(230,59,46,0)}}
+.exercises-container{padding:12px 16px}
+.exercise-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden;transition:border-color 0.2s}
+.exercise-card.completed{border-color:rgba(76,175,80,0.4)}
+.exercise-header{display:flex;align-items:center;padding:12px 14px;cursor:pointer;gap:12px}
+.ex-number{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent);min-width:24px;line-height:1}
+.ex-info{flex:1}
+.ex-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:0.5px;color:var(--text);line-height:1.2}
+.ex-target{font-size:12px;color:var(--muted);margin-top:2px}
+.ex-target span{color:var(--accent2);font-weight:600}
+.ex-check{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;color:transparent;font-size:14px;transition:all 0.2s;cursor:pointer;flex-shrink:0}
+.ex-check.done{background:var(--success);border-color:var(--success);color:white}
+.sets-container{border-top:1px solid var(--border);padding:0 14px 12px;display:none}
+.sets-container.open{display:block}
+.ex-illustration{background:#111;border-bottom:1px solid var(--border);padding:14px 12px;display:flex;align-items:flex-start;gap:12px}
+.ex-desc{font-size:12px;color:var(--muted);line-height:1.6}
+.ex-desc strong{color:var(--accent2);display:block;font-family:'Barlow Condensed',sans-serif;font-size:12px;letter-spacing:1.5px;margin-bottom:4px}
+.muscles-tag{display:inline-block;margin-top:7px;font-size:10px;font-family:'Barlow Condensed',sans-serif;letter-spacing:1.5px;color:var(--gold);background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);padding:2px 8px;border-radius:10px}
+.illus-toggle{display:block;width:calc(100% - 28px);margin:8px 14px 0;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);border-radius:20px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;padding:5px 0;cursor:pointer;text-align:center}
+.sets-header{display:grid;grid-template-columns:36px 1fr 1fr 44px;gap:8px;padding:8px 0 6px;font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.set-row{display:grid;grid-template-columns:36px 1fr 1fr 44px;gap:8px;margin-bottom:6px;align-items:center}
+.set-num{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;color:var(--muted);text-align:center}
+.set-input{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px 10px;color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;font-weight:500;text-align:center;width:100%;-webkit-appearance:none}
+.set-input:focus{outline:none;border-color:var(--accent);background:#1f1410}
+.set-input::placeholder{color:var(--muted);font-size:13px}
+.set-done-btn{width:36px;height:36px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.set-done-btn.done{background:rgba(76,175,80,0.15);border-color:var(--success);color:var(--success)}
+.rest-hint{font-size:11px;color:var(--muted);text-align:center;padding:6px 0 2px;letter-spacing:1px}
+.rest-timer-bar{display:flex;align-items:center;gap:10px;background:rgba(230,59,46,0.08);border:1px solid rgba(230,59,46,0.25);border-radius:8px;padding:10px 14px;margin:6px 0}
+.rest-timer-bar.done{background:rgba(76,175,80,0.1);border-color:rgba(76,175,80,0.4)}
+.rest-count{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--accent);min-width:44px;line-height:1}
+.rest-count.done{color:var(--success)}
+.rest-progress{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden}
+.rest-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:3px;transition:width 0.9s linear}
+.rest-fill.done{background:var(--success)}
+.rest-btns{display:flex;gap:6px}
+.rest-btn{background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;padding:5px 9px;cursor:pointer;white-space:nowrap}
+.rest-btn.primary{background:rgba(230,59,46,0.15);border-color:var(--accent);color:var(--accent)}
+.rest-label{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--muted);min-width:60px}
+.prev-badge{font-size:10px;color:var(--gold);font-family:'Barlow Condensed',sans-serif;letter-spacing:1px;text-align:center;padding:3px 0 6px;opacity:0.8}
+.week-nav{display:flex;align-items:center;gap:10px;padding:12px 16px 0}
+.week-nav button{background:var(--card);border:1px solid var(--border);border-radius:6px;color:var(--muted);width:32px;height:32px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.week-label{flex:1;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;letter-spacing:2px;color:var(--text);text-transform:uppercase}
+.progress-wrap{padding:10px 16px 0}
+.progress-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;transition:width 0.4s ease}
+.progress-label{font-size:11px;color:var(--muted);letter-spacing:1px;margin-top:5px;font-family:'Barlow Condensed',sans-serif}
+.bottom-bar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:linear-gradient(0deg,#0f0f0f 60%,transparent);padding:12px 16px 28px;display:flex;gap:10px}
+.btn-save{flex:1;padding:14px;background:var(--accent);border:none;border-radius:10px;color:white;font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;cursor:pointer;box-shadow:0 4px 20px rgba(230,59,46,0.4);transition:all 0.2s}
+.btn-save:active{transform:scale(0.97)}
+.btn-history{padding:14px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--muted);font-size:20px;cursor:pointer}
+.history-panel{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;backdrop-filter:blur(4px)}
+.history-panel.open{display:flex;align-items:flex-end}
+.history-sheet{background:#111;border-top:1px solid var(--border);border-radius:20px 20px 0 0;width:100%;max-height:75vh;overflow-y:auto;padding:20px 16px 40px}
+.history-title{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:var(--accent);margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.close-btn{font-size:20px;color:var(--muted);cursor:pointer}
+.history-entry{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.history-date{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:2px;color:var(--gold);margin-bottom:8px;text-transform:uppercase}
+.history-row{font-size:13px;color:var(--muted);margin-bottom:4px;line-height:1.4}
+.history-row strong{color:var(--text)}
+.empty-history{text-align:center;color:var(--muted);font-size:14px;padding:30px 0}
+.toast{position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);background:var(--success);color:white;padding:10px 20px;border-radius:20px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:2px;opacity:0;transition:all 0.3s;pointer-events:none;z-index:300;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
@@ -101,9 +102,9 @@
   </div>
 </header>
 <div class="week-nav">
-  <button onclick="changeWeek(-1)">‹</button>
+  <button onclick="changeWeek(-1)">&#8249;</button>
   <div class="week-label" id="weekLabel">Semaine 1</div>
-  <button onclick="changeWeek(1)">›</button>
+  <button onclick="changeWeek(1)">&#8250;</button>
 </div>
 <div class="progress-wrap">
   <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
@@ -133,31 +134,346 @@
 <div class="toast" id="toast"></div>
 
 <script>
+// ─── ILLUSTRATIONS ───────────────────────────────────────────────────────────
 const IL = {
-  "Squat gobelet": {
-    svg:`<svg width="85" height="95" viewBox="0 0 90 100" fill="none"><circle cx="45" cy="10" r="7" fill="#c9a84c"/><line x1="45" y1="17" x2="45" y2="42" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><rect x="36" y="30" width="18" height="6" rx="3" fill="#e63b2e"/><rect x="33" y="29" width="4" height="8" rx="2" fill="#ff6b35"/><rect x="53" y="29" width="4" height="8" rx="2" fill="#ff6b35"/><line x1="45" y1="28" x2="38" y2="34" stroke="#f0ece4" stroke-width="2.5" stroke-linecap="round"/><line x1="45" y1="28" x2="52" y2="34" stroke="#f0ece4" stroke-width="2.5" stroke-linecap="round"/><line x1="38" y1="42" x2="52" y2="42" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="42" x2="22" y2="68" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="22" y1="68" x2="18" y2="90" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="18" y1="90" x2="8" y2="92" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="50" y1="42" x2="68" y2="68" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="68" y1="68" x2="72" y2="90" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="72" y1="90" x2="82" y2="92" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/></svg>`,
-    desc:"Pieds largeur épaules, orteils ouverts. Haltère tenu à deux mains contre la poitrine. Descends en gardant le dos droit, genoux dans l'axe des pieds. Remonte en poussant dans les talons.",
-    muscles:"Quadriceps · Fessiers · Ischio-jambiers"
-  },
-  "Presse à cuisses": {
-    svg:`<svg width="85" height="95" viewBox="0 0 90 100" fill="none"><rect x="5" y="52" width="50" height="9" rx="3" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><rect x="52" y="8" width="8" height="46" rx="2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="12" cy="44" r="6" fill="#c9a84c"/><line x1="18" y1="44" x2="50" y2="52" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><circle cx="50" cy="52" r="4" fill="#f0ece4" opacity="0.8"/><line x1="50" y1="50" x2="57" y2="26" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="57" y1="26" x2="53" y2="12" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="53" y1="12" x2="60" y2="10" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="54" y1="53" x2="64" y2="29" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="64" y1="29" x2="60" y2="14" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="60" y1="14" x2="67" y2="12" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/></svg>`,
-    desc:"Assieds-toi, dos bien calé. Pieds à plat sur la plateforme, largeur d'épaules. Pousse jusqu'à presque tendre les jambes. Reviens lentement sans décoller le dos ni verrouiller les genoux.",
-    muscles:"Quadriceps · Fessiers · Ischio-jambiers"
-  },
-  "Fentes marchées": {
-    svg:`<svg width="85" height="95" viewBox="0 0 90 100" fill="none"><circle cx="45" cy="9" r="7" fill="#c9a84c"/><line x1="45" y1="16" x2="45" y2="42" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="45" y1="22" x2="28" y2="34" stroke="#f0ece4" stroke-width="2.5" stroke-linecap="round"/><rect x="20" y="32" width="12" height="5" rx="2.5" fill="#e63b2e"/><rect x="17" y="31" width="4" height="7" rx="2" fill="#ff6b35"/><line x1="45" y1="22" x2="62" y2="34" stroke="#f0ece4" stroke-width="2.5" stroke-linecap="round"/><rect x="58" y="32" width="12" height="5" rx="2.5" fill="#e63b2e"/><rect x="69" y="31" width="4" height="7" rx="2" fill="#ff6b35"/><line x1="38" y1="42" x2="52" y2="42" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="42" x2="28" y2="65" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="28" y1="65" x2="28" y2="90" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="18" y1="92" x2="36" y2="92" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="50" y1="42" x2="64" y2="68" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="64" y1="68" x2="72" y2="58" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="72" y1="58" x2="80" y2="62" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/></svg>`,
-    desc:"Debout, haltères dans chaque main. Avance une jambe en grand pas. Descends le genou arrière vers le sol. Genou avant au-dessus de la cheville. Pousse pour avancer et recommence avec l'autre jambe.",
-    muscles:"Quadriceps · Fessiers · Équilibre"
-  },
-  "Hip thrust": {
-    svg:`<svg width="85" height="95" viewBox="0 0 90 100" fill="none"><rect x="5" y="52" width="35" height="10" rx="4" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><line x1="5" y1="92" x2="85" y2="92" stroke="#2a2a2a" stroke-width="2"/><circle cx="22" cy="48" r="7" fill="#c9a84c"/><line x1="22" y1="55" x2="40" y2="57" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="40" y1="57" x2="48" y2="44" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><ellipse cx="50" cy="42" rx="7" ry="5" fill="#ff6b35" opacity="0.85"/><rect x="30" y="39" width="40" height="6" rx="3" fill="#c9a84c" opacity="0.9"/><line x1="52" y1="45" x2="68" y2="70" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="68" y1="70" x2="68" y2="92" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="48" y1="45" x2="34" y2="72" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="34" y1="72" x2="34" y2="92" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/></svg>`,
-    desc:"Dos sur un banc (hauteur omoplates), pieds à plat. Barre ou haltère sur les hanches. Pousse les hanches vers le plafond en contractant les fessiers. Maintiens 1 sec en haut, redescends lentement.",
-    muscles:"Grand fessier · Moyen fessier · Ischio-jambiers"
-  },
-  "Leg curl couché": {
-    svg:`<svg width="85" height="95" viewBox="0 0 90 100" fill="none"><rect x="5" y="42" width="70" height="10" rx="4" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="76" cy="72" r="7" fill="#2a2a2a" stroke="#e63b2e" stroke-width="2"/><circle cx="12" cy="36" r="6" fill="#c9a84c"/><line x1="18" y1="38" x2="62" y2="42" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><ellipse cx="62" cy="43" rx="6" ry="4" fill="#f0ece4" opacity="0.7"/><line x1="58" y1="44" x2="74" y2="49" stroke="#f0ece4" stroke-width="5" stroke-linecap="round"/><line x1="74" y1="49" x2="76" y2="66" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="76" y1="66" x2="80" y2="70" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/></svg>`,
-    desc:"Allongée sur le ventre. Chevilles sous les rouleaux. Fléchis les jambes pour ramener les talons vers les fessiers. Remonte lentement. Garde le bassin plaqué sur le banc tout au long du mouvement.",
-    muscles:"Ischio-jambiers · Mollets"
-  },
-  "Mollets debout": {
-    svg:`<svg width="85" height="95" viewBox="0 0 90 100" fill="none"><rect x="20" y="82" width="50" height="10" rx="3" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="45" cy="8" r="7" fill="#c9a84c"/><line x1="45" y1="15" x2="45" y2="42" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="38" y1="42" x2="52" y2="42" stroke="#f0ece4" s
+  "Squat gobelet":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><circle cx="45" cy="10" r="7" fill="#c9a84c"/><line x1="45" y1="17" x2="45" y2="42" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><rect x="36" y="30" width="18" height="6" rx="3" fill="#e63b2e"/><rect x="33" y="29" width="4" height="8" rx="2" fill="#ff6b35"/><rect x="53" y="29" width="4" height="8" rx="2" fill="#ff6b35"/><line x1="38" y1="42" x2="52" y2="42" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="42" x2="22" y2="68" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="22" y1="68" x2="18" y2="90" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="50" y1="42" x2="68" y2="68" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="68" y1="68" x2="72" y2="90" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/></svg>',desc:"Pieds largeur épaules, orteils ouverts. Haltère à deux mains contre la poitrine. Descends dos droit, genoux dans l'axe. Remonte en poussant dans les talons.",muscles:"Quadriceps · Fessiers · Ischio-jambiers"},
+  "Presse à cuisses":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><rect x="5" y="52" width="50" height="9" rx="3" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><rect x="52" y="8" width="8" height="46" rx="2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="12" cy="44" r="6" fill="#c9a84c"/><line x1="18" y1="44" x2="50" y2="52" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="50" y1="50" x2="57" y2="26" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="54" y1="53" x2="64" y2="29" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/></svg>',desc:"Assieds-toi, dos bien calé. Pieds à plat sur la plateforme. Pousse jusqu'à presque tendre les jambes. Reviens lentement sans décoller le dos.",muscles:"Quadriceps · Fessiers · Ischio-jambiers"},
+  "Fentes marchées":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><circle cx="45" cy="9" r="7" fill="#c9a84c"/><line x1="45" y1="16" x2="45" y2="42" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><rect x="20" y="32" width="12" height="5" rx="2.5" fill="#e63b2e"/><rect x="58" y="32" width="12" height="5" rx="2.5" fill="#e63b2e"/><line x1="40" y1="42" x2="28" y2="65" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="28" y1="65" x2="28" y2="90" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="18" y1="92" x2="36" y2="92" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="50" y1="42" x2="64" y2="68" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="64" y1="68" x2="72" y2="58" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/></svg>',desc:"Debout, haltères dans chaque main. Avance une jambe en grand pas. Descends le genou arrière vers le sol. Genou avant au-dessus de la cheville. Alterne.",muscles:"Quadriceps · Fessiers · Équilibre"},
+  "Hip thrust":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><rect x="5" y="52" width="35" height="10" rx="4" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="22" cy="48" r="7" fill="#c9a84c"/><line x1="22" y1="55" x2="40" y2="57" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="40" y1="57" x2="48" y2="44" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><rect x="30" y="39" width="40" height="6" rx="3" fill="#c9a84c" opacity="0.9"/><line x1="52" y1="45" x2="68" y2="70" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="68" y1="70" x2="68" y2="92" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="48" y1="45" x2="34" y2="72" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="34" y1="72" x2="34" y2="92" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/></svg>',desc:"Dos sur un banc (hauteur omoplates), pieds à plat. Barre sur les hanches. Pousse les hanches vers le plafond en contractant les fessiers. 1 sec en haut.",muscles:"Grand fessier · Ischio-jambiers"},
+  "Leg curl couché":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><rect x="5" y="42" width="70" height="10" rx="4" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="12" cy="36" r="6" fill="#c9a84c"/><line x1="18" y1="38" x2="62" y2="42" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="58" y1="44" x2="74" y2="49" stroke="#f0ece4" stroke-width="5" stroke-linecap="round"/><line x1="74" y1="49" x2="76" y2="66" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/></svg>',desc:"Allongée sur le ventre. Chevilles sous les rouleaux. Fléchis les jambes pour ramener les talons vers les fessiers. Remonte lentement. Bassin plaqué.",muscles:"Ischio-jambiers · Mollets"},
+  "Abduction de la hanche assis":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><rect x="20" y="50" width="50" height="10" rx="4" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="45" cy="28" r="7" fill="#c9a84c"/><line x1="45" y1="35" x2="45" y2="50" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="45" y1="48" x2="26" y2="48" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="45" y1="48" x2="64" y2="48" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="26" y1="48" x2="16" y2="60" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="64" y1="48" x2="74" y2="60" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="16" y1="60" x2="16" y2="82" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="74" y1="60" x2="74" y2="82" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><ellipse cx="20" cy="52" rx="7" ry="5" fill="#e63b2e" opacity="0.5"/><ellipse cx="70" cy="52" rx="7" ry="5" fill="#e63b2e" opacity="0.5"/><path d="M10 60 Q6 52 16 48" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="2 2"/><path d="M80 60 Q84 52 74 48" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="2 2"/></svg>',desc:"Assieds-toi dans la machine, dos droit, genoux contre les coussins intérieurs. Pousse les genoux vers l'extérieur contre la résistance. Pause brève en haut. Reviens lentement.",muscles:"Moyen fessier · Petit fessier · Abducteurs"},
+  "Adducteur machine":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><rect x="20" y="50" width="50" height="10" rx="4" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="45" cy="28" r="7" fill="#c9a84c"/><line x1="45" y1="35" x2="45" y2="50" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="45" y1="48" x2="30" y2="56" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="45" y1="48" x2="60" y2="56" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="30" y1="56" x2="22" y2="65" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="60" y1="56" x2="68" y2="65" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="22" y1="65" x2="22" y2="85" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="68" y1="65" x2="68" y2="85" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><ellipse cx="26" cy="60" rx="7" ry="5" fill="#e63b2e" opacity="0.5"/><ellipse cx="64" cy="60" rx="7" ry="5" fill="#e63b2e" opacity="0.5"/><path d="M28 60 Q36 54 45 54" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="2 2"/><path d="M62 60 Q54 54 45 54" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="2 2"/></svg>',desc:"Assieds-toi, bassin au fond du siège, dos droit. Genoux contre les coussins extérieurs. Pousse vers l'intérieur pour rapprocher les jambes. Relâche lentement. Pieds à plat, sans cambrer.",muscles:"Adducteurs · Intérieur des cuisses"},
+  "Tirage poitrine verticale barre":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><rect x="25" y="0" width="40" height="5" rx="2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><rect x="10" y="18" width="70" height="5" rx="2.5" fill="#c9a84c"/><rect x="20" y="72" width="50" height="8" rx="3" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="45" cy="36" r="7" fill="#c9a84c"/><line x1="45" y1="43" x2="43" y2="72" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="43" y1="48" x2="18" y2="20" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="47" y1="48" x2="72" y2="20" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="37" y1="72" x2="20" y2="70" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="49" y1="72" x2="66" y2="70" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/></svg>',desc:"Assis sous la poulie, genoux calés. Prise large en pronation. Penche-toi légèrement en arrière (30°). Tire la barre vers la poitrine haute en serrant les omoplates. Remonte lentement.",muscles:"Grand dorsal · Biceps · Trapèzes"},
+  "Tirage visage à la poulie":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><rect x="0" y="28" width="8" height="35" rx="3" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="4" cy="45" r="4" fill="none" stroke="#e63b2e" stroke-width="2"/><line x1="8" y1="45" x2="34" y2="45" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="3 2"/><line x1="34" y1="45" x2="28" y2="38" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/><line x1="34" y1="45" x2="28" y2="52" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/><circle cx="60" cy="26" r="7" fill="#c9a84c"/><line x1="60" y1="33" x2="60" y2="65" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="57" y1="40" x2="36" y2="38" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="36" y1="38" x2="28" y2="32" stroke="#f0ece4" stroke-width="2.5" stroke-linecap="round"/><line x1="57" y1="42" x2="36" y2="52" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="36" y1="52" x2="28" y2="58" stroke="#f0ece4" stroke-width="2.5" stroke-linecap="round"/><line x1="55" y1="65" x2="38" y2="65" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="38" y1="65" x2="32" y2="75" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="65" y1="65" x2="76" y2="75" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/></svg>',desc:"Debout face à la poulie haute, corde en prise pronation. Recule jusqu'à tension. Tire la corde vers le visage en écartant les coudes sur les côtés. Serre les omoplates. Reviens lentement.",muscles:"Deltoïdes postérieurs · Trapèzes · Rhomboïdes"},
+  "Triceps poulie corde":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><rect x="32" y="0" width="26" height="5" rx="2.5" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><line x1="45" y1="5" x2="38" y2="36" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/><line x1="45" y1="5" x2="52" y2="36" stroke="#c9a84c" stroke-width="2.5" stroke-linecap="round"/><circle cx="45" cy="22" r="7" fill="#c9a84c"/><line x1="45" y1="29" x2="43" y2="55" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="42" y1="35" x2="34" y2="62" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><circle cx="34" cy="64" r="3" fill="#e63b2e"/><line x1="44" y1="35" x2="56" y2="62" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><circle cx="56" cy="64" r="3" fill="#e63b2e"/><line x1="39" y1="55" x2="36" y2="88" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="47" y1="55" x2="50" y2="88" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/></svg>',desc:"Debout face à la machine, légèrement penché avant. Coudes collés aux flancs — ils ne bougent pas. Pousse la corde vers le bas jusqu'à l'extension complète en écartant les brins. Remonte lentement.",muscles:"Triceps (3 chefs)"},
+  "Développé couché Smith Machine":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><rect x="5" y="8" width="80" height="6" rx="2" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><rect x="5" y="55" width="80" height="8" rx="3" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="20" cy="44" r="6" fill="#c9a84c"/><line x1="26" y1="46" x2="62" y2="50" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><ellipse cx="62" cy="50" rx="6" ry="4" fill="#f0ece4" opacity="0.7"/><rect x="30" y="10" width="30" height="6" rx="2" fill="#c9a84c" opacity="0.8"/><line x1="30" y1="13" x2="30" y2="50" stroke="#f0ece4" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 2"/><line x1="60" y1="13" x2="60" y2="50" stroke="#f0ece4" stroke-width="2" stroke-linecap="round" stroke-dasharray="3 2"/><line x1="55" y1="52" x2="36" y2="55" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="36" y1="55" x2="30" y2="65" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="69" y1="52" x2="76" y2="65" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/></svg>',desc:"Allongée sous la barre Smith, yeux sous la barre. Prise légèrement plus large que les épaules. Débloque la barre. Descends vers le milieu de la poitrine, coudes à 45°. Pousse jusqu'à extension.",muscles:"Pectoraux · Triceps · Deltoïdes antérieurs"},
+  "Élévation frontale alternée haltères":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><circle cx="45" cy="10" r="7" fill="#c9a84c"/><line x1="45" y1="17" x2="45" y2="48" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="38" y1="48" x2="52" y2="48" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="42" y1="22" x2="22" y2="14" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><rect x="8" y="10" width="16" height="5" rx="2.5" fill="#e63b2e"/><line x1="48" y1="22" x2="68" y2="38" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><rect x="65" y="34" width="16" height="5" rx="2.5" fill="#ff6b35" opacity="0.6"/><line x1="40" y1="48" x2="38" y2="80" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="50" y1="48" x2="52" y2="80" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="30" y1="85" x2="46" y2="85" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="44" y1="85" x2="60" y2="85" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/></svg>',desc:"Debout, haltères devant les cuisses. Lève un haltère devant toi à hauteur d'épaule, paume vers le bas. Redescends lentement. Alterne. Tronc engagé, dos droit, sans élan.",muscles:"Deltoïdes antérieurs · Trapèzes"},
+  "Dead Bug":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><line x1="5" y1="58" x2="85" y2="58" stroke="#2a2a2a" stroke-width="2"/><circle cx="18" cy="44" r="6" fill="#c9a84c"/><line x1="24" y1="46" x2="55" y2="50" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="20" y1="46" x2="14" y2="34" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="14" y1="34" x2="8" y2="20" stroke="#f0ece4" stroke-width="2.5" stroke-linecap="round"/><line x1="40" y1="50" x2="34" y2="40" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="34" y1="40" x2="28" y2="30" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="55" y1="50" x2="68" y2="40" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="68" y1="40" x2="78" y2="20" stroke="#f0ece4" stroke-width="2.5" stroke-linecap="round"/><line x1="50" y1="50" x2="56" y2="62" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="56" y1="62" x2="62" y2="80" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/></svg>',desc:"Allongée sur le dos, bras tendus vers le plafond, genoux à 90° au-dessus des hanches. Bas du dos plaqué au sol. Étends bras droit + jambe gauche simultanément vers le sol. Reviens. Alterne. Lent.",muscles:"Abdominaux · Coordination · Stabilité lombaire"},
+  "Crunchs bicycle":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><line x1="5" y1="92" x2="85" y2="92" stroke="#2a2a2a" stroke-width="2"/><line x1="30" y1="75" x2="10" y2="85" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="38" y1="72" x2="52" y2="60" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="34" y1="72" x2="38" y2="55" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><circle cx="46" cy="46" r="7" fill="#c9a84c"/></svg>',desc:"Allongée sur le dos, mains derrière la nuque. Amène le coude gauche vers le genou droit plié, jambe gauche étendue. Alterne en pédalant. Lent et contrôlé.",muscles:"Abdominaux · Obliques · Fléchisseurs hanches"},
+  // Séance C
+  "Écarté couché haltères":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><rect x="15" y="48" width="60" height="10" rx="4" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="45" cy="36" r="7" fill="#c9a84c"/><line x1="45" y1="43" x2="45" y2="48" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="42" y1="44" x2="14" y2="36" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><rect x="4" y="32" width="12" height="5" rx="2.5" fill="#e63b2e"/><line x1="48" y1="44" x2="76" y2="36" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><rect x="74" y="32" width="12" height="5" rx="2.5" fill="#e63b2e"/><path d="M16 36 Q30 20 45 26" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="2 2"/><path d="M74 36 Q60 20 45 26" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="2 2"/><line x1="30" y1="58" x2="18" y2="58" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="18" y1="58" x2="12" y2="72" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="60" y1="58" x2="72" y2="58" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="72" y1="58" x2="78" y2="72" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/></svg>',desc:"Allongée sur un banc incliné à 30°, haltères au-dessus de la poitrine, paumes face à face. Ouvre les bras en arc de cercle vers le bas jusqu'à sentir l'étirement. Remonte en arc sans claquer les haltères.",muscles:"Pectoraux (chef inférieur & moyen) · Deltoïdes antérieurs"},
+  "Tirage corde bras tendus":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><rect x="30" y="0" width="30" height="5" rx="2.5" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="45" cy="8" r="4" fill="none" stroke="#e63b2e" stroke-width="2"/><line x1="45" y1="12" x2="38" y2="30" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/><line x1="45" y1="12" x2="52" y2="30" stroke="#c9a84c" stroke-width="2" stroke-linecap="round"/><circle cx="45" cy="22" r="7" fill="#c9a84c"/><line x1="45" y1="29" x2="43" y2="52" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="42" y1="33" x2="32" y2="30" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="32" y1="30" x2="24" y2="52" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="48" y1="33" x2="58" y2="30" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="58" y1="30" x2="66" y2="52" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="37" y1="52" x2="22" y2="52" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="49" y1="52" x2="68" y2="52" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="22" y1="52" x2="18" y2="68" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="68" y1="52" x2="72" y2="68" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/></svg>',desc:"Debout face à la poulie haute, corde en main, bras tendus. Garde les bras droits. Tire la corde vers les cuisses en pivotant depuis les épaules. Contracte les dorsaux en bas. Remonte lentement.",muscles:"Grand dorsal · Gainage · Triceps"},
+  "Fente arrière + tirage poulie basse":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><rect x="0" y="72" width="8" height="28" rx="3" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="4" cy="78" r="4" fill="none" stroke="#e63b2e" stroke-width="2"/><line x1="8" y1="78" x2="28" y2="52" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="3 2"/><circle cx="50" cy="12" r="7" fill="#c9a84c"/><line x1="50" y1="19" x2="50" y2="46" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="48" y1="26" x2="28" y2="52" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><rect x="22" y="48" width="10" height="5" rx="2.5" fill="#e63b2e"/><line x1="44" y1="46" x2="36" y2="68" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="36" y1="68" x2="36" y2="90" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="56" y1="46" x2="68" y2="62" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="68" y1="62" x2="74" y2="52" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/></svg>',desc:"Debout face à la poulie basse. Recule une jambe en fente. Tire la poignée vers la poitrine en ramenant le coude. Pousse sur le pied avant pour revenir. Alterne les jambes à chaque série.",muscles:"Fessiers · Grand dorsal · Quadriceps · Équilibre"},
+  "Élévation latérale haltères":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><circle cx="45" cy="10" r="7" fill="#c9a84c"/><line x1="45" y1="17" x2="45" y2="50" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="38" y1="50" x2="52" y2="50" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="42" y1="24" x2="14" y2="24" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><rect x="2" y="20" width="13" height="5" rx="2.5" fill="#e63b2e"/><line x1="48" y1="24" x2="76" y2="24" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><rect x="75" y="20" width="13" height="5" rx="2.5" fill="#e63b2e"/><path d="M14 36 Q14 24 28 22" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="2 2"/><path d="M76 36 Q76 24 62 22" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="2 2"/><line x1="40" y1="50" x2="36" y2="82" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="50" y1="50" x2="54" y2="82" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="28" y1="86" x2="44" y2="86" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="46" y1="86" x2="62" y2="86" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/></svg>',desc:"Debout, haltères le long des cuisses, paumes vers l'intérieur. Lève les deux bras sur les côtés jusqu'à hauteur d'épaule, coudes légèrement fléchis. Petite pause en haut. Redescends lentement en 3 secondes. Tronc stable, sans balancer.",muscles:"Deltoïdes latéraux · Supraspinatus"},
+  "Rotation du tronc poulie (woodchop)":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><rect x="0" y="5" width="8" height="40" rx="3" fill="#2a2a2a" stroke="#3a3a3a" stroke-width="1.5"/><circle cx="4" cy="15" r="4" fill="none" stroke="#e63b2e" stroke-width="2"/><line x1="8" y1="15" x2="34" y2="35" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="3 2"/><circle cx="50" cy="22" r="7" fill="#c9a84c"/><line x1="50" y1="29" x2="50" y2="56" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="48" y1="32" x2="34" y2="35" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><rect x="28" y="32" width="10" height="5" rx="2.5" fill="#e63b2e"/><line x1="52" y1="38" x2="68" y2="65" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><rect x="64" y="62" width="10" height="5" rx="2.5" fill="#ff6b35" opacity="0.7"/><line x1="44" y1="56" x2="30" y2="56" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="30" y1="56" x2="24" y2="70" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="56" y1="56" x2="70" y2="56" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="70" y1="56" x2="76" y2="70" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><path d="M40 36 Q48 52 56 60" fill="none" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="2 2"/></svg>',desc:"Debout de côté à la poulie haute. Saisis la poignée à deux mains. Tire en diagonale vers le bas de l'autre côté (de l'épaule haute vers la hanche opposée). Rotation du tronc, hanches stables.",muscles:"Obliques · Transverse · Épaules · Coordination"},
+  "Squat sumo":{svg:'<svg width="80" height="90" viewBox="0 0 90 100" fill="none"><circle cx="45" cy="8" r="7" fill="#c9a84c"/><line x1="45" y1="15" x2="45" y2="42" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="38" y1="42" x2="52" y2="42" stroke="#f0ece4" stroke-width="3" stroke-linecap="round"/><line x1="40" y1="42" x2="15" y2="72" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="15" y1="72" x2="10" y2="90" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="2" y1="92" x2="20" y2="92" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><line x1="50" y1="42" x2="75" y2="72" stroke="#f0ece4" stroke-width="4.5" stroke-linecap="round"/><line x1="75" y1="72" x2="80" y2="90" stroke="#f0ece4" stroke-width="4" stroke-linecap="round"/><line x1="70" y1="92" x2="88" y2="92" stroke="#f0ece4" stroke-width="3.5" stroke-linecap="round"/><rect x="34" y="26" width="22" height="5" rx="2.5" fill="#e63b2e" opacity="0.7"/><line x1="34" y1="28" x2="22" y2="44" stroke="#e63b2e" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/><line x1="56" y1="28" x2="68" y2="44" stroke="#e63b2e" stroke-width="1" stroke-dasharray="2 2" opacity="0.5"/></svg>',desc:"Pieds très écartés (bien plus que largeur épaules), orteils pointés vers l'extérieur. Descends en gardant le dos droit et les genoux dans l'axe des pieds. Haltère ou kettlebell tenu entre les jambes.",muscles:"Adducteurs · Fessiers · Quadriceps · Intérieur cuisses"},
+};
+
+// ─── PROGRAMME ───────────────────────────────────────────────────────────────
+const SESSIONS = {
+  A: { exercises: [
+    // 🔩 MACHINES
+    {name:"Presse à cuisses",              target:"3 x 15",           charge:"30–40 kg",              sets:3},
+    {name:"Leg curl couché",               target:"3 x 12",           charge:"15–20 kg",              sets:3},
+    {name:"Abduction de la hanche assis",  target:"3 x 15",           charge:"15–25 kg",              sets:3},
+    {name:"Adducteur machine",             target:"3 x 15",           charge:"15–25 kg",              sets:3},
+    // 🏋️ POIDS LIBRES
+    {name:"Squat gobelet",                 target:"4 x 12",           charge:"8–12 kg",               sets:4},
+    {name:"Hip thrust",                    target:"4 x 15",           charge:"PDC puis barre 10–15 kg",sets:4},
+    {name:"Fentes marchées",               target:"3 x 12 / jambe",   charge:"PDC puis 2×4 kg",       sets:3},
+  ]},
+  B: { exercises: [
+    // 🏋️ POIDS LIBRES / MACHINES GUIDÉES
+    {name:"Développé couché Smith Machine",      target:"4 x 10", charge:"20–30 kg",    sets:4},
+    {name:"Élévation frontale alternée haltères",target:"3 x 12 / bras",charge:"3–5 kg",sets:3},
+    // 🔁 POULIES
+    {name:"Tirage poitrine verticale barre",     target:"4 x 12", charge:"15–25 kg",    sets:4},
+    {name:"Tirage visage à la poulie",           target:"3 x 15", charge:"8–12 kg",     sets:3},
+    {name:"Triceps poulie corde",                target:"3 x 15", charge:"8–12 kg",     sets:3},
+    // 🧘 POIDS DU CORPS
+    {name:"Dead Bug",                            target:"3 x 10 / côté",charge:"—",     sets:3},
+    {name:"Crunchs bicycle",                     target:"3 x 20", charge:"—",           sets:3},
+  ]},
+  C: { exercises: [
+    // 🏋️ POIDS LIBRES
+    {name:"Écarté couché haltères",              target:"4 x 12", charge:"5–10 kg",         sets:4},
+    {name:"Élévation latérale haltères",         target:"3 x 12", charge:"4–8 kg",          sets:3},
+    {name:"Squat sumo",                          target:"4 x 15", charge:"PDC ou KB 12 kg", sets:4},
+    // 🔁 POULIES
+    {name:"Tirage corde bras tendus",            target:"4 x 12", charge:"10–15 kg",        sets:4},
+    {name:"Fente arrière + tirage poulie basse", target:"3 x 10 / jambe",charge:"8–12 kg",  sets:3},
+    {name:"Rotation du tronc poulie (woodchop)", target:"3 x 12 / côté",charge:"5–10 kg",   sets:3},
+  ]},
+};
+
+// ─── REST TIMER STATE ─────────────────────────────────────────────────────────
+const REST_DEFAULT = 60;
+let restTimers = {}; // key: "ei_s" → {sec, interval, total}
+
+function startRest(ei, s) {
+  const k = `${ei}_${s}`;
+  stopRest(k);
+  restTimers[k] = { sec: REST_DEFAULT, total: REST_DEFAULT, interval: null };
+  restTimers[k].interval = setInterval(() => {
+    restTimers[k].sec--;
+    renderRestBar(ei, s);
+    if (restTimers[k].sec <= 0) {
+      stopRest(k);
+      renderRestBar(ei, s);
+      if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+    }
+  }, 1000);
+  renderRestBar(ei, s);
+}
+
+function stopRest(k) {
+  if (restTimers[k] && restTimers[k].interval) {
+    clearInterval(restTimers[k].interval);
+    restTimers[k].interval = null;
+  }
+}
+
+function resetRest(ei, s) {
+  const k = `${ei}_${s}`;
+  stopRest(k);
+  delete restTimers[k];
+  renderRestBar(ei, s);
+}
+
+function addRest(ei, s, delta) {
+  const k = `${ei}_${s}`;
+  if (!restTimers[k]) return;
+  restTimers[k].sec = Math.max(0, restTimers[k].sec + delta);
+  restTimers[k].total = Math.max(restTimers[k].total, restTimers[k].sec);
+  renderRestBar(ei, s);
+}
+
+function renderRestBar(ei, s) {
+  const bar = document.getElementById(`rest-${ei}-${s}`);
+  if (!bar) return;
+  const k = `${ei}_${s}`;
+  const rt = restTimers[k];
+  if (!rt) {
+    bar.style.display = 'none';
+    return;
+  }
+  const done = rt.sec <= 0;
+  const pct = done ? 100 : Math.round((1 - rt.sec / rt.total) * 100);
+  bar.style.display = 'flex';
+  bar.className = 'rest-timer-bar' + (done ? ' done' : '');
+  bar.innerHTML = `
+    <div class="rest-count${done?' done':''}">${done?'GO':fmt(rt.sec)}</div>
+    <div class="rest-progress"><div class="rest-fill${done?' done':''}" style="width:${pct}%"></div></div>
+    <div class="rest-btns">
+      ${!done ? `<button class="rest-btn" onclick="addRest(${ei},${s},-15)">-15s</button>
+      <button class="rest-btn" onclick="addRest(${ei},${s},15)">+15s</button>` : ''}
+      <button class="rest-btn${done?'':' primary'}" onclick="${done?`resetRest(${ei},${s})`:`startRest(${ei},${s})`}">${done?'↺':'⏸'}</button>
+    </div>`;
+}
+
+function fmt(sec) {
+  const m = Math.floor(sec/60).toString().padStart(2,'0');
+  const s = (sec%60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let cur, week, tInt=null, tSec=1200, tRun=false, sd={};
+
+function loadPrefs(){
+  try {
+    const p = JSON.parse(localStorage.getItem('fg_prefs')||'{}');
+    cur  = p.session || 'A';
+    week = p.week    || getCurrentWeek();
+  } catch(e){ cur='A'; week=1; }
+}
+function savePrefs(){
+  localStorage.setItem('fg_prefs', JSON.stringify({session:cur, week:week}));
+}
+function getCurrentWeek(){
+  // Semaine courante dans le cycle 12 semaines depuis une date de départ
+  try {
+    const start = localStorage.getItem('fg_start');
+    if(!start) { localStorage.setItem('fg_start', Date.now()); return 1; }
+    const elapsed = Math.floor((Date.now() - parseInt(start)) / (7*24*3600*1000));
+    return Math.max(1, Math.min(12, elapsed + 1));
+  } catch(e){ return 1; }
+}
+
+function gk(w,s){ return `fg_w${w}_${s}`; }
+function ld(){ try{ return JSON.parse(localStorage.getItem(gk(week,cur))||'{}') }catch(e){ return {}; } }
+function sv(){ localStorage.setItem(gk(week,cur), JSON.stringify(sd)); }
+
+// Récupère les valeurs de la semaine précédente pour un exercice donné
+function getPrevValues(ei, sets){
+  if(week <= 1) return null;
+  try {
+    const prev = JSON.parse(localStorage.getItem(gk(week-1, cur))||'{}');
+    const vals = [];
+    let hasData = false;
+    for(let s=0; s<sets; s++){
+      const d = prev[`${ei}_${s}`]||{};
+      vals.push({weight: d.weight||'', reps: d.reps||''});
+      if(d.weight || d.reps) hasData = true;
+    }
+    return hasData ? vals : null;
+  } catch(e){ return null; }
+}
+
+// ─── NAVIGATION ───────────────────────────────────────────────────────────────
+function setSession(s){
+  cur=s;
+  savePrefs();
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['A','B','C'][i]===s));
+  resetTimer(); render();
+}
+function changeWeek(d){
+  week=Math.max(1,Math.min(12,week+d));
+  document.getElementById('weekLabel').textContent=`Semaine ${week}`;
+  document.getElementById('weekBadge').textContent=`SEMAINE ${week}`;
+  savePrefs();
+  render();
+}
+
+// ─── RENDER ───────────────────────────────────────────────────────────────────
+function render(){
+  sd=ld();
+  document.getElementById('weekLabel').textContent=`Semaine ${week}`;
+  document.getElementById('weekBadge').textContent=`SEMAINE ${week}`;
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['A','B','C'][i]===cur));
+
+  const cont=document.getElementById('exercisesContainer'); cont.innerHTML='';
+  SESSIONS[cur].exercises.forEach((ex,ei)=>{
+    const done=isDone(ei,ex.sets);
+    const il=IL[ex.name];
+    const prev=getPrevValues(ei,ex.sets);
+    const card=document.createElement('div');
+    card.className='exercise-card'+(done?' completed':'');
+    card.id=`ex-${ei}`;
+
+    let prevHint = '';
+    if(prev && week > 1){
+      const summary = prev.map((v,i)=>`S${i+1}: ${v.weight?v.weight+'kg':'?'} × ${v.reps||'?'}`).join(' · ');
+      prevHint = `<div class="prev-badge">📈 Sem. ${week-1} : ${summary}</div>`;
+    }
+
+    card.innerHTML=`
+      <div class="exercise-header" onclick="togSets(${ei})">
+        <div class="ex-number">${ei+1}</div>
+        <div class="ex-info">
+          <div class="ex-name">${ex.name}</div>
+          <div class="ex-target">${ex.target} — <span>${ex.charge}</span></div>
+        </div>
+        <div class="ex-check${done?' done':''}" id="chk-${ei}" onclick="event.stopPropagation();markAll(${ei},${ex.sets})">${done?'✓':''}</div>
+      </div>
+      <div class="sets-container" id="sc-${ei}">
+        ${il?`<button class="illus-toggle" id="ib-${ei}" onclick="togIl(${ei})">👁 VOIR LE MOUVEMENT</button>
+        <div class="ex-illustration" id="il-${ei}" style="display:none">${il.svg}<div class="ex-desc"><strong>COMMENT FAIRE</strong>${il.desc}<br><span class="muscles-tag">${il.muscles}</span></div></div>`:''}
+        <div class="sets-header"><div>SÉRIE</div><div>POIDS (kg)</div><div>REPS</div><div></div></div>
+        ${buildRows(ei,ex.sets,prev)}
+        ${prevHint}
+        <div class="rest-hint">⏱ Coche une série pour lancer le minuteur de récupération</div>
+      </div>`;
+    cont.appendChild(card);
+  });
+  prog();
+}
+
+function buildRows(ei,n,prev){
+  let h='';
+  for(let s=0;s<n;s++){
+    const d=sd[`${ei}_${s}`]||{};
+    // Pré-remplir avec valeurs semaine précédente si champ vide
+    const w = d.weight!==undefined ? d.weight : (prev&&prev[s]?prev[s].weight:'');
+    const r = d.reps!==undefined   ? d.reps   : (prev&&prev[s]?prev[s].reps:'');
+    h+=`<div class="set-row">
+      <div class="set-num">${s+1}</div>
+      <input class="set-input" type="number" inputmode="decimal" placeholder="kg" value="${w}" onchange="sf(${ei},${s},'weight',this.value)">
+      <input class="set-input" type="number" inputmode="numeric" placeholder="reps" value="${r}" onchange="sf(${ei},${s},'reps',this.value)">
+      <button class="set-done-btn${d.done?' done':''}" id="sb-${ei}-${s}" onclick="tsd(${ei},${s})">${d.done?'✓':'○'}</button>
+    </div>
+    <div id="rest-${ei}-${s}" style="display:none"></div>`;
+  }
+  return h;
+}
+
+function togSets(ei){ document.getElementById(`sc-${ei}`).classList.toggle('open'); }
+function togIl(ei){
+  const el=document.getElementById(`il-${ei}`);
+  const btn=document.getElementById(`ib-${ei}`);
+  const show=el.style.display==='none';
+  el.style.display=show?'flex':'none';
+  btn.textContent=show?'✕ MASQUER':'👁 VOIR LE MOUVEMENT';
+}
+
+function sf(ei,s,f,v){
+  const k=`${ei}_${s}`; if(!sd[k])sd[k]={};
+  sd[k][f]=v; sv();
+}
+function tsd(ei,s){
+  const k=`${ei}_${s}`; if(!sd[k])sd[k]={};
+  sd[k].done=!sd[k].done; sv();
+  const btn=document.getElementById(`sb-${ei}-${s}`);
+  btn.classList.toggle('done',sd[k].done); btn.textContent=sd[k].done?'✓':'○';
+  // Lance le minuteur de récupération quand on valide une série
+  if(sd[k].done) startRest(ei, s);
+  else resetRest(ei, s);
+  const ex=SESSIONS[cur].exercises[ei];
+  const all=isDone(ei,ex.sets);
+  document.getElementById(`ex-${ei}`).classList.toggle('completed',all);
+  const ch=document.getElementById(`chk-${ei}`);
+  ch.classList.toggle('done',all); ch.textContent=all?'✓':'';
+  prog();
+}
+function markAll(ei,n){
+  const was=(sd[`${ei}_0`]||{}).done;
+  for(let s=0;s<n;s++){
+    const k=`${ei}_${s}`; if(!sd[k])sd[k]={};
+    sd[k].done=!was;
+    const b=document.getElementById(`sb-${ei}-${s}`);
+    if(b){b.classList.toggle('done',!was);b.textContent=!was?'✓':'○';}
+  }
+  sv();
+  document.getElementById(`ex-${ei}`).classList.toggle('completed',!was);
+  const ch=document.getElementById(`chk-${ei}`); ch.classList.toggle('done',!was); ch.textContent=!was?'✓':'';
+  prog();
+}
+function isDone(ei,n){ for(let s=0;s<n;s++){if(!(sd[`${ei}_${s}`]||{}).done)return false;} return n>0; }
+
+function prog(){
+  const ses=SESSIONS[cur]; let tot=0,dn=0;
+  ses.exercises.forEach((ex,ei)=>{ tot+=ex.sets; for(let s=0;s<ex.sets;s++){if((sd[`${ei}_${s}`]||{}).done)dn++;} });
+  document.getElementById('progressFill').style.width=(tot?Math.round(dn/tot*100):0)+'%';
+  document.getElementById('progressLabel').textContent=`${dn} / ${tot} séries complétées`;
+}
+
+// ─── TIMER ────────────────────────────────────────────────────────────────────
+function toggleTimer(){
+  if(!tRun){
+    tRun=true; document.getElementById('timerBtn').textContent='⏸ PAUSE'; document.getElementById('timerBtn').classList.add('running');
+    tInt=setInterval(()=>{ if(tSec>0){tSec--;updT();}else{clearInterval(tInt);tRun=false;document.getElementById('timerBtn').textContent='✓ TERMINÉ';document.getElementById('timerBtn').classList.remove('running');} },1000);
+  }else{ clearInterval(tInt);tRun=false;document.getElementById('timerBtn').textContent='▶ REPRENDRE';document.getElementById('timerBtn').classList.remove('running'); }
+}
+function resetTimer(){ clearInterval(tInt);tRun=false;tSec=1200;updT();const b=document.getElementById('timerBtn');b.textContent='▶ DÉMARRER';b.classList.remove('running'); }
+function updT(){ const m=Math.floor(tSec/60).toString().padStart(2,'0');const s=(tSec%60).toString().padStart(2,'0');document.getElementById('timerDisplay').textContent=`${m}:${s}`; }
+
+// ─── SAVE / HISTORY ───────────────────────────────────────────────────────────
+function saveSession(){
+  const d=new Date(),ds=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+  let h=[]; try{h=JSON.parse(localStorage.getItem('fg_history')||'[]');}catch(e){}
+  const entries=[];
+  SESSIONS[cur].exercises.forEach((ex,ei)=>{
+    const sets=[];
+    for(let s=0;s<ex.sets;s++){const d=sd[`${ei}_${s}`]||{};if(d.weight||d.reps)sets.push(`${d.weight||'?'}kg×${d.reps||'?'}`);}
+    if(sets.length)entries.push({name:ex.name,sets});
+  });
+  h.unshift({date:ds,session:cur,week,data:entries});
+  localStorage.setItem('fg_history',JSON.stringify(h.slice(0,50)));
+  showToast('✓ SÉANCE SAUVEGARDÉE');
+}
+function showToast(msg){ const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500); }
+function openHistory(){
+  let h=[]; try{h=JSON.parse(localStorage.getItem('fg_history')||'[]');}catch(e){}
+  document.getElementById('historyContent').innerHTML=h.length
+    ? h.map(e=>`<div class="history-entry"><div class="history-date">Séance ${e.session} — Sem. ${e.week} — ${e.date}</div>${e.data.map(x=>`<div class="history-row"><strong>${x.name}</strong> : ${x.sets.join(' | ')}</div>`).join('')}</div>`).join('')
+    : '<div class="empty-history">Aucune séance enregistrée encore.</div>';
+  document.getElementById('historyPanel').classList.add('open');
+}
+function closeHistory(){ document.getElementById('historyPanel').classList.remove('open'); }
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+loadPrefs();
+render();
+</script>
+</body>
+</html>
