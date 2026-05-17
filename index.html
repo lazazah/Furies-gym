@@ -359,7 +359,8 @@ function toggleWarmTimer(){
 // ─── REST TIMER ───────────────────────────────────────────────────────────────
 function startRest(ei,s){
   const k=`${ei}_${s}`;stopRest(k);
-  restTimers[k]={sec:60,total:60,interval:null};
+  const duration = mode==='maison' ? 35 : 60;
+  restTimers[k]={sec:duration,total:duration,interval:null};
   restTimers[k].interval=setInterval(()=>{
     restTimers[k].sec--;renderRestBar(ei,s);
     if(restTimers[k].sec<=0){stopRest(k);renderRestBar(ei,s);if(navigator.vibrate)navigator.vibrate([200,100,200]);}
@@ -499,26 +500,37 @@ function buildCard(ex,ei){
     <div class="sets-container" id="sc-${ei}">
       ${il?`<button class="illus-toggle" id="ib-${ei}" onclick="togIl(${ei})">👁 VOIR LE MOUVEMENT</button>
       <div class="ex-illustration" id="il-${ei}" style="display:none">${il.svg}<div class="ex-desc"><strong>COMMENT FAIRE</strong>${il.desc}<br><span class="muscles-tag">${il.muscles}</span></div></div>`:''}
-      <div class="sets-header"><div>SÉR.</div><div>POIDS</div><div>REPS</div><div></div></div>
+      <div class="sets-header" style="${mode==='maison'?'grid-template-columns:32px 1fr 40px':''}">
+        <div>SÉR.</div>${mode==='maison'?'':'<div>POIDS</div>'}<div>REPS</div><div></div>
+      </div>
       ${buildRows(ei,ex.sets,prev)}
       ${prevHint}
-      <div class="rest-hint">⏱ Coche ✓ pour lancer le minuteur de récup (60 sec)</div>
+      <div class="rest-hint">⏱ Coche ✓ pour lancer le minuteur de récup (${mode==='maison'?'35':'60'} sec)</div>
     </div>`;
   return card;
 }
 
 function buildRows(ei,n,prev){
+  const isMaison=mode==='maison';
   let h='';
   for(let s=0;s<n;s++){
     const d=sd[`${ei}_${s}`]||{};
     const w=d.weight!==undefined?d.weight:(prev&&prev[s]?prev[s].weight:'');
     const r=d.reps!==undefined?d.reps:(prev&&prev[s]?prev[s].reps:'');
-    h+=`<div class="set-row">
-      <div class="set-num">${s+1}</div>
-      <input class="set-input" type="number" inputmode="decimal" placeholder="kg" value="${w}" onchange="sf(${ei},${s},'weight',this.value)">
-      <input class="set-input" type="number" inputmode="numeric" placeholder="reps" value="${r}" onchange="sf(${ei},${s},'reps',this.value)">
-      <button class="set-done-btn${d.done?' done':''}" id="sb-${ei}-${s}" onclick="tsd(${ei},${s})">${d.done?'✓':'○'}</button>
-    </div><div id="rest-${ei}-${s}" style="display:none;flex-direction:row"></div>`;
+    if(isMaison){
+      h+=`<div class="set-row" style="grid-template-columns:32px 1fr 40px">
+        <div class="set-num">${s+1}</div>
+        <input class="set-input" type="number" inputmode="numeric" placeholder="reps" value="${r}" onchange="sf(${ei},${s},'reps',this.value)">
+        <button class="set-done-btn${d.done?' done':''}" id="sb-${ei}-${s}" onclick="tsd(${ei},${s})">${d.done?'✓':'○'}</button>
+      </div><div id="rest-${ei}-${s}" style="display:none;flex-direction:row"></div>`;
+    } else {
+      h+=`<div class="set-row">
+        <div class="set-num">${s+1}</div>
+        <input class="set-input" type="number" inputmode="decimal" placeholder="kg" value="${w}" onchange="sf(${ei},${s},'weight',this.value)">
+        <input class="set-input" type="number" inputmode="numeric" placeholder="reps" value="${r}" onchange="sf(${ei},${s},'reps',this.value)">
+        <button class="set-done-btn${d.done?' done':''}" id="sb-${ei}-${s}" onclick="tsd(${ei},${s})">${d.done?'✓':'○'}</button>
+      </div><div id="rest-${ei}-${s}" style="display:none;flex-direction:row"></div>`;
+    }
   }
   return h;
 }
